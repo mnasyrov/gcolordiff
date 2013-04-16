@@ -4,6 +4,7 @@
 	"manifest_version": 2,
 
 	"description": "The extension colorizes a diff patch inline in an email. Commonly, patches are sent by notifications from Git servers.",
+	"homepage_url": "https://bitbucket.org/mnasyrov/gcolordiff",
 
 	"permissions": [
 		"https://mail.google.com/*"
