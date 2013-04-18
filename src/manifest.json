@@ -1,6 +1,6 @@
 {
 	"name": "Gmail Color Diff",
-	"version": "0.1",
+	"version": "0.0.1",
 	"manifest_version": 2,
 
 	"description": "The extension colorizes a diff patch inline in an email. Commonly, patches are sent by notifications from Git servers.",
