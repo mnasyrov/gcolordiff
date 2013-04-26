@@ -40,7 +40,7 @@
 	}
 
 	function isDiffMessage(str) {
-		return str && (str.indexOf('- Log -------------') >= 0 || str.indexOf('Changes diff:') >= 0);
+		return str && (str.indexOf('- Log -------------') >= 0 || str.indexOf('Changes diff:') >= 0 || str.indexOf('diff --git') >= 0);
 	}
 
 	window.addEventListener('hashchange', gcolordiff);
