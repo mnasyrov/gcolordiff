@@ -1,6 +1,6 @@
 {
 	"name": "Gmail Color Diff",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"manifest_version": 2,
 
 	"description": "This extension colors diff patches inline a Gmail email.",
@@ -15,7 +15,7 @@
 
 	"content_scripts": [{
 		"matches": ["https://mail.google.com/*"],
-		"js": ["gcolordiff.js"],
+		"js": ["jquery-2.0.0.min.js", "gcolordiff.js"],
 		"run-at": "document_end"
 	}]
 }
