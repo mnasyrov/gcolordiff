@@ -1,0 +1,20 @@
+.gcolordiff-message { 
+	font-family: monospace,monospace;
+  	font-size: 1em; 
+}
+
+.gcolordiff-summary-author, .gcolordiff-summary-date, .gcolordiff-summary-newrevision,
+.gcolordiff-summary-modified, .gcolordiff-summary-added, .gcolordiff-summary-deleted,
+.gcolordiff-summary-log, .gcolordiff-summary-url
+{
+	font-weight: bold; 
+	text-decoration: underline; 
+}
+
+.gcolordiff-summary-separator {color: lightgrey; } 
+
+.gcolordiff-diff-oldrev { color:red; font-weight:bold } 
+.gcolordiff-diff-newrev { color:green; font-weight:bold } 
+.gcolordiff-diff-lineindex { color: blue; }
+.gcolordiff-diff-oldline { color: red; } 
+.gcolordiff-diff-newline { color: green; }
