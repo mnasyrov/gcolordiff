@@ -26,12 +26,10 @@
 
 
 	function colordiff() {
-		var $div = $(this)[0];
+		var div = $(this)[0];
 		if ($(div).hasClass('gcolordiff-message')) {
 			return;
 		}
-
-		var div = $(this)[0];
 		if (div) {
 			var html = div.innerHTML;
 			if (!isDiffMessage(html)) {
@@ -71,7 +69,7 @@
 	}
 
 	$(function() {
-		$('.ii.gt, .message, .msg').waitUntilExists(colordiff);
+		$('.ii.gt .a3s').waitUntilExists(colordiff);
 	})
 
 
