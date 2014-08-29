@@ -15,7 +15,7 @@
 
 	"content_scripts": [{
 		"matches": ["https://mail.google.com/*"],
-		"js": ["jquery-2.0.0.min.js", "gcolordiff.js"],
+		"js": ["jquery-2.1.1.min.js", "gcolordiff.js"],
 		"css": ["gcolordiff.css"],
 		"run-at": "document_end"
 	}]
