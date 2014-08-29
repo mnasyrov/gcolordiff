@@ -24,9 +24,10 @@
 		return $this;
 	}
 
+	var regexps = null;
 
 	function colordiff() {
-		var div = $(this)[0];
+		var div = this;
 		if ($(div).hasClass('gcolordiff-message')) {
 			return;
 		}
@@ -36,29 +37,43 @@
 				return;
 			}
 
+			if (!regexps) {
+				regexps = {
+					summaryAuthor: /(Author:)/g,
+					summaryDate: /\n(Date:)/g,
+					summaryNewRevision: /\n(New Revision:)/g,
+					summaryModified: /\n(Modified:)/g,
+					summaryAdded: /\n(Added:)/g,
+					summaryDeleted: /\n(Deleted:)/g,
+					summaryLog: /\n(Log:)/g,
+					summaryUrl: /\n(URL:)/g,
+					summarySeparator: /\n(=====.*<br>)/g,
+					diffOldRev: /\n(--- .*)(<br\/?>)/g,
+					diffNewRev: /\n(\+\+\+ .*)(<br\/?>)/g,
+					diffLineIndex: /\n(@@.*@@)/g,
+					diffOldLine: /\n(-.*)(<br\/?>)/g,
+					diffNewLine: /\n(\+.*)(<br\/?>)/g
+				}
+				console.log(1)
+			}
+
 			$(div).addClass('gcolordiff-message');
 			
-			var oldRevRegExp = /\n(--- .*)(<br\/?>)/g;
-			var newRevRegExp = /\n(\+\+\+ .*)(<br\/?>)/g;
-			var lineIndexRegExp = /\n(@@.*@@)/g;
-			var oldRevLineRegExp = /\n(-.*)(<br\/?>)/g;
-			var newRevLineRegExp = /\n(\+.*)(<br\/?>)/g;
-			
 			html = html
-			.replace(/(Author:)/g, '\n<span class="gcolordiff-summary-author">$1</span>')
-			.replace(/\n(Date:)/g, '\n<span class="gcolordiff-summary-date">$1</span>')
-			.replace(/\n(New Revision:)/g, '\n<span class="gcolordiff-summary-newrevision">$1</span>')
-			.replace(/\n(Modified:)/g, '\n<hr/><span class="gcolordiff-summary-modified">$1</span>')
-			.replace(/\n(Added:)/g, '\n<hr><span class="gcolordiff-summary-added">$1</span>')
-			.replace(/\n(Deleted:)/g, '\n<hr><span class="gcolordiff-summary-deleted">$1</span>')
-			.replace(/\n(Log:)/g, '\n<span class="gcolordiff-summary-log">$1</span>')
-			.replace(/\n(URL:)/g, '\n<span class="gcolordiff-summary-url">$1</span>')
-			.replace(/\n(=====.*<br>)/g, '\n<span class="gcolordiff-summary-separator">$1</span>')
-			.replace(oldRevRegExp, '\n<span class="gcolordiff-diff-oldrev">$1</span>$2')
-			.replace(newRevRegExp, '\n<span class="gcolordiff-diff-newrev">$1</span>$2')
-			.replace(lineIndexRegExp, '\n<span class="gcolordiff-diff-lineindex">$1</span>')
-			.replace(oldRevLineRegExp, '\n<span class="gcolordiff-diff-oldline">$1</span>$2')
-			.replace(newRevLineRegExp, '\n<span class="gcolordiff-diff-newline">$1</span>$2');
+			.replace(regexps.summaryAuthor, '\n<span class="gcolordiff-summary-author">$1</span>')
+			.replace(regexps.summaryDate, '\n<span class="gcolordiff-summary-date">$1</span>')
+			.replace(regexps.summaryNewRevision, '\n<span class="gcolordiff-summary-newrevision">$1</span>')
+			.replace(regexps.summaryModified, '\n<hr/><span class="gcolordiff-summary-modified">$1</span>')
+			.replace(regexps.summaryAdded, '\n<hr><span class="gcolordiff-summary-added">$1</span>')
+			.replace(regexps.summaryDeleted, '\n<hr><span class="gcolordiff-summary-deleted">$1</span>')
+			.replace(regexps.summaryLog, '\n<span class="gcolordiff-summary-log">$1</span>')
+			.replace(regexps.summaryUrl, '\n<span class="gcolordiff-summary-url">$1</span>')
+			.replace(regexps.summarySeparator, '\n<span class="gcolordiff-summary-separator">$1</span>')
+			.replace(regexps.diffOldRev, '\n<span class="gcolordiff-diff-oldrev">$1</span>$2')
+			.replace(regexps.diffNewRev, '\n<span class="gcolordiff-diff-newrev">$1</span>$2')
+			.replace(regexps.diffLineIndex, '\n<span class="gcolordiff-diff-lineindex">$1</span>')
+			.replace(regexps.diffOldLine, '\n<span class="gcolordiff-diff-oldline">$1</span>$2')
+			.replace(regexps.diffNewLine, '\n<span class="gcolordiff-diff-newline">$1</span>$2');
 			
 			div.innerHTML = html;
 		}
