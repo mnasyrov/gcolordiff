@@ -1,65 +1,39 @@
-(function($) {
-
-	/**
-	* @function
-	* @property {object} jQuery plugin which runs handler function once specified element is inserted into the DOM
-	* @param {function} handler A function to execute at the time when the element is inserted
-	* @param {bool} shouldRunHandlerOnce Optional: if true, handler is unbound after its first invocation
-	* @example $(selector).waitUntilExists(function);
-	*/
-
-	$.fn.waitUntilExists = function (handler, shouldRunHandlerOnce, isChild) {
-		var found = 'found';
-		var $this = $(this.selector);
-		var $elements = $this.not(function() { return $(this).data(found); }).each(handler); //.data(found, true);
-
-		if (!isChild){
-	    	(window.waitUntilExists_Intervals = window.waitUntilExists_Intervals || {})[this.selector] =
-				window.setInterval(function () { $this.waitUntilExists(handler, shouldRunHandlerOnce, true); }, 500);
-		}
-		else if (shouldRunHandlerOnce && $elements.length) {
-			window.clearInterval(window.waitUntilExists_Intervals[this.selector]);
-		}
-
-		return $this;
-	}
+(function () {
+	"use strict";
 
 	var regexps = null;
 
-	function colordiff() {
-		var div = this;
-		if ($(div).hasClass('gcolordiff-message')) {
+	function colordiff(div) {
+		if (!div || div.classList.contains("gcolordiff-message")) {
 			return;
 		}
-		if (div) {
-			var html = div.innerHTML;
-			if (!isDiffMessage(html)) {
-				return;
-			}
+		var html = div.innerHTML;
+		if (!isDiffMessage(html)) {
+			return;
+		}
 
-			if (!regexps) {
-				regexps = {
-					summaryAuthor: /(Author:)/g,
-					summaryDate: /\n(Date:)/g,
-					summaryNewRevision: /\n(New Revision:)/g,
-					summaryModified: /\n(Modified:)/g,
-					summaryAdded: /\n(Added:)/g,
-					summaryDeleted: /\n(Deleted:)/g,
-					summaryLog: /\n(Log:)/g,
-					summaryUrl: /\n(URL:)/g,
-					summarySeparator: /\n(=====.*<br>)/g,
-					diffOldRev: /\n(--- .*)(<br\/?>)/g,
-					diffNewRev: /\n(\+\+\+ .*)(<br\/?>)/g,
-					diffLineIndex: /\n(@@.*@@)/g,
-					diffOldLine: /\n(-.*)(<br\/?>)/g,
-					diffNewLine: /\n(\+.*)(<br\/?>)/g
-				}
-				console.log(1)
-			}
+		div.classList.add("gcolordiff-message");
 
-			$(div).addClass('gcolordiff-message');
-			
-			html = html
+		if (!regexps) {
+			regexps = {
+				summaryAuthor: /(Author:)/g,
+				summaryDate: /\n(Date:)/g,
+				summaryNewRevision: /\n(New Revision:)/g,
+				summaryModified: /\n(Modified:)/g,
+				summaryAdded: /\n(Added:)/g,
+				summaryDeleted: /\n(Deleted:)/g,
+				summaryLog: /\n(Log:)/g,
+				summaryUrl: /\n(URL:)/g,
+				summarySeparator: /\n(=====.*<br>)/g,
+				diffOldRev: /\n(--- .*)(<br\/?>)/g,
+				diffNewRev: /\n(\+\+\+ .*)(<br\/?>)/g,
+				diffLineIndex: /\n(@@.*@@)/g,
+				diffOldLine: /\n(-.*)(<br\/?>)/g,
+				diffNewLine: /\n(\+.*)(<br\/?>)/g
+			};
+		}
+
+		html = html
 			.replace(regexps.summaryAuthor, '\n<span class="gcolordiff-summary-author">$1</span>')
 			.replace(regexps.summaryDate, '\n<span class="gcolordiff-summary-date">$1</span>')
 			.replace(regexps.summaryNewRevision, '\n<span class="gcolordiff-summary-newrevision">$1</span>')
@@ -74,18 +48,37 @@
 			.replace(regexps.diffLineIndex, '\n<span class="gcolordiff-diff-lineindex">$1</span>')
 			.replace(regexps.diffOldLine, '\n<span class="gcolordiff-diff-oldline">$1</span>$2')
 			.replace(regexps.diffNewLine, '\n<span class="gcolordiff-diff-newline">$1</span>$2');
-			
-			div.innerHTML = html;
-		}
-	}	
+
+		div.innerHTML = html;
+	}
 
 	function isDiffMessage(str) {
 		return str && (str.indexOf('- Log -------------') >= 0 || str.indexOf('Changes diff:') >= 0 || str.indexOf('diff --git') >= 0);
 	}
 
-	$(function() {
-		$('.ii.gt .a3s').waitUntilExists(colordiff);
-	})
+	function scanNodes(nodeList, callback) {
+		if (nodeList) {
+			for (var i = 0; i < nodeList.length; i++) {
+				var node = nodeList[i];
+				if (node.nodeType == 1) {
+					if (node.classList && node.classList.contains("a3s")) {
+						callback(node);
+					} else if (node.querySelector) {
+						scanNodes(node.querySelectorAll(".ii.gt .a3s"), callback);
+					}
+				}
+			}
+		}
+	}
+
+	var observer = new MutationObserver(function (mutations) {
+		mutations.forEach(function (mutation) {
+			scanNodes(mutation.addedNodes, colordiff);
+		});
+	});
+	observer.observe(document.body, {
+		childList: true, subtree: true, attributes: false, characterData: false
+	});
 
 
-})(jQuery);
+})();
