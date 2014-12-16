@@ -53,7 +53,7 @@
 	}
 
 	function isDiffMessage(str) {
-		return str && (str.indexOf('- Log -------------') >= 0 || str.indexOf('Changes diff:') >= 0 || str.indexOf('diff --git') >= 0);
+		return str && (str.match(/^--- .*\n\+\+\+ .*/m) || str.indexOf('- Log -------------') >= 0  || str.indexOf('Changes diff:') >= 0 || str.indexOf('diff --git') >= 0);
 	}
 
 	function scanNodes(nodeList, callback) {
