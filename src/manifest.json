@@ -1,9 +1,9 @@
 {
-	"name": "Gmail Color Diff",
-	"version": "0.1.5",
+	"name": "Color Diff for Gmail™",
+	"version": "0.1.6",
 	"manifest_version": 2,
 
-	"description": "This extension colors diff patches inline a Gmail email.",
+	"description": "This extension colors source code's diff inline of an email.",
 
 	"permissions": [
 		"https://mail.google.com/*"

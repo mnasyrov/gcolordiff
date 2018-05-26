@@ -1,4 +1,10 @@
 #!/bin/bash
-mkdir builds
+set -e
+
+VERSION=$(jq -r ".version" src/manifest.json)
+FILENAME="gcolordiff-${VERSION}.zip"
+
+mkdir -p build
+test -f build/${FILENAME} && rm build/${FILENAME}
 cd src
-zip -r ../builds/gcolordiff-0.1.5.zip .
+zip -r ../build/${FILENAME} .
